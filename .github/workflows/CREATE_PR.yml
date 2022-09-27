@@ -70,4 +70,4 @@ jobs:
             -b " \
               $BODY \
               -  ${{ github.event.head_commit.message }} \
-            "
+            " \
