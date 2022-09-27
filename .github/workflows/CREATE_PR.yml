@@ -51,13 +51,13 @@ jobs:
       - name: Edit release pr
         if: ${{ steps.check_pr.outputs.count != 0 }}
         run: |
-          PRITEM=$(gh pr list -S ${pr_title}' in:本番反映' \
+          pr_data=$(gh pr list -S ${pr_title}' in:本番反映' \
             --json "number,title,body" \
             | jq -c .[])
-          echo $PRITEM | jq -r .number
-          # echo prJson | jq .
-          # gh pr edit \
-          #   -B main \
-          #   -t '【本番反映】${{ github.event.head_commit.message }}' \
-          #   -b "# 本番反映\nここに文字列" \
-          #   -a ${{ github.actor }} 
+          NUMBER=$($pr_data | jq -r .number)
+          TITLE=$($pr_data | jq -r .title)
+          BODY=$($pr_data | jq -r body)
+          gh pr edit $NUMBER \
+            -t '$TITLE / ${{ github.event.head_commit.message }}' \
+            -b $BODY  ${{ github.event.head_commit.message }}' \
+            -a ${{ github.actor }} 
