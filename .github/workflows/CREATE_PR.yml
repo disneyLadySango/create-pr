@@ -57,13 +57,9 @@ jobs:
           NUMBER="$(echo $pr_data | jq -r '.number')"
           TITLE="$(echo $pr_data | jq -r '.title')"
           BODY="$(echo $pr_data | jq -r '.body')"
-          echo $NUMBER
-          # gh pr edit $pr_data | jq -r '.number' -t '[本番反映]test'
-          # NUMBER=$($pr_data | jq -r .number)
-          # TITLE=$($pr_data | jq -r .title)
-          # BODY=$($pr_data | jq -r .body)
-          # echo $NUMBER
-          # echo $TITLE
-          # gh pr edit $NUMBER \
-          #   -t $TITLE / ${{ github.event.head_commit.message }} \
-          #   -a ${{ github.actor }} 
+          gh pr edit $NUMBER \
+            -t $TITLE / ${{ github.event.head_commit.message }} \
+            -b "
+              $BODY
+              - ${{ github.event.head_commit.message }}
+            "
