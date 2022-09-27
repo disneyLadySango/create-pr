@@ -51,7 +51,8 @@ jobs:
       - name: Edit release pr
         if: ${{ steps.check_pr.outputs.count != 0 }}
         run: |
-          gh pr list -S ${pr_title}' in:本番反映' --json number --json title --json body
+          prJson=$(gh pr list -S ${pr_title}' in:本番反映' --json number --json title --json body --json assignees)
+          echo prJson | jq .
           # gh pr edit \
           #   -B main \
           #   -t '【本番反映】${{ github.event.head_commit.message }}' \
