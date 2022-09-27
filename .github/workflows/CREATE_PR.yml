@@ -51,8 +51,7 @@ jobs:
       - name: Edit release pr
         if: ${{ steps.check_pr.outputs.count != 0 }}
         run: |
-          sudo apt -y install jq
-          gh pr list -S ${pr_title}' in:本番反映' --json number
+          gh pr list -S ${pr_title}' in:本番反映' --jq .
           echo PR_NUMBER
           # echo prJson | jq .
           # gh pr edit \
