@@ -47,7 +47,7 @@ jobs:
         # -a assignee(PRの作成者がbotになるので)
         # -b bodyだがPRテンプレートをそのまま使っているので - を指定
         # --body-title bodyの作成 ファイル名を指定しています
-        
+
         run: |
           gh pr create \
             -B main \
@@ -63,6 +63,6 @@ jobs:
             --json "title" \
             | jq -c .[])
           TITLE="$(echo $pr_data | jq -r '.title')"
-          echo TITLE
+          echo $TITLE
           gh pr edit  ${{ github.ref_name }} \
-            -t ${TITLE} / ${{ github.event.head_commit.message }}
+            -t "${TITLE} / ${{ github.event.head_commit.message }}"
