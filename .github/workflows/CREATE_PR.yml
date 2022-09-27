@@ -54,7 +54,7 @@ jobs:
           PRITEM=$(gh pr list -S ${pr_title}' in:本番反映' \
             --json "number,title,body" \
             | jq -c .[])
-          echo PR_NUMBER
+          echo PRITEM
           # echo prJson | jq .
           # gh pr edit \
           #   -B main \
