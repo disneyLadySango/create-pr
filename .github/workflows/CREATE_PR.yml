@@ -49,5 +49,5 @@ jobs:
           gh pr create 
             -B ${{ steps.check_pr.outputs.base_branch }} 
             -t '【本番反映】${{ github.event.head_commit.message }}' 
-            -b "main"
-            -a ${{ github.actor }}
+            -b "# 本番反映\nここに文字列"
+            -a @${{ github.actor }}
