@@ -57,5 +57,5 @@ jobs:
           NUMBER="$(echo $pr_data | jq -r '.number')"
           TITLE="$(echo $pr_data | jq -r '.title')"
           BODY="$(echo $pr_data | jq -r '.body')"
-          gh pr edit $NUMBER \
-            -t $TITLE / ${{ github.event.head_commit.message }} 
+          gh pr edit ${NUMBER} \
+            -t ${TITLE} / ${{ github.event.head_commit.message }} 
