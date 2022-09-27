@@ -20,7 +20,7 @@
 
 on:
   push:
-    branches: [ develop ]
+    # branches: [ develop ]
 
 jobs:
   create-release-pr:
@@ -46,8 +46,8 @@ jobs:
       - name: Create release pr
         if: ${{ steps.check_pr.outputs.count == 0 }}
         run: |
-          gh pr create 
-            -B ${{ steps.check_pr.outputs.base_branch }} 
-            -t '【本番反映】${{ github.event.head_commit.message }}' 
-            -b "# 本番反映\nここに文字列"
-            -a @${{ github.actor }}
+          gh pr create \
+            -B ${{ steps.check_pr.outputs.base_branch }} \
+            -t '【本番反映】${{ github.event.head_commit.message }}' \
+            -b "# 本番反映\nここに文字列" \
+            -a @${{ github.actor }} \
