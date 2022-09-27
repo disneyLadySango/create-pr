@@ -51,9 +51,9 @@ jobs:
       - name: Edit release pr
         if: ${{ steps.check_pr.outputs.count != 0 }}
         run: |
-          gh pr list -S ${pr_title}' in:本番反映' \
+          PRITEM=$(gh pr list -S ${pr_title}' in:本番反映' \
             --json "number,title,body" \
-            | jq -c .[]
+            | jq -c .[])
           echo PR_NUMBER
           # echo prJson | jq .
           # gh pr edit \
