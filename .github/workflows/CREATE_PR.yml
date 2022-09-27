@@ -20,7 +20,7 @@
 
 on:
   push:
-    # branches: [ develop ]
+    branches: [ develop ]
 
 jobs:
   create-release-pr:
@@ -62,5 +62,6 @@ jobs:
             --json "title" \
             | jq -c .[])
           TITLE="$(echo $pr_data | jq -r '.title')"
+          echo TITLE
           gh pr edit  ${{ github.ref_name }} \
-            -t '${TITLE} / ${{ github.event.head_commit.message }}'
+            -t ${TITLE} / ${{ github.event.head_commit.message }}
