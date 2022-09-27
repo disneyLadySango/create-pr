@@ -57,7 +57,7 @@ jobs:
           echo $pr_data | jq -r '.number'
           echo $pr_data | jq -r '.title'
           echo $pr_data | jq -r '.body'
-          gh pr view $pr_data | jq -r '.number'
+          gh pr edit $pr_data | jq -r '.number' -t '[本番反映]test'
           # NUMBER=$($pr_data | jq -r .number)
           # TITLE=$($pr_data | jq -r .title)
           # BODY=$($pr_data | jq -r .body)
