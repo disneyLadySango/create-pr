@@ -54,10 +54,10 @@ jobs:
           pr_data=$(gh pr list -S ${pr_title}' in:本番反映' \
             --json "number,title,body" \
             | jq -c .[])
-          NUMBER=`$pr_data | jq -r '.number'`
-          TITLE=`$pr_data | jq -r '.title'`
-          echo $NUMBER
-          echo $TITLE
+          echo $pr_data | jq -r '.number'
+          echo $pr_data | jq -r '.title'
+          echo $pr_data | jq -r '.body'
+          git pr view $pr_data | jq -r '.number'
           # NUMBER=$($pr_data | jq -r .number)
           # TITLE=$($pr_data | jq -r .title)
           # BODY=$($pr_data | jq -r .body)
