@@ -37,17 +37,23 @@ jobs:
       - name: Check if pr exists
         id: check_pr
         run: |
-          pr_title=本番反映
-          base_branch=${{ (github.ref == 'refs/heads/develop' && 'main') || 'develop' }}
-          echo "::set-output name=count::$(gh pr list -S ${pr_title}' in:title' -B $base_branch | wc -l)"
-          echo "::set-output name=pr_title::$pr_title"
+          echo "::set-output name=count::$(gh pr list -S ${pr_title}' in:本番反映' | wc -l)"
           echo "::set-output name=base_branch::$base_branch"
       # リリース用PRを作成
       - name: Create release pr
         if: ${{ steps.check_pr.outputs.count == 0 }}
         run: |
           gh pr create \
-            -B ${{ steps.check_pr.outputs.base_branch }} \
+            -B main \
             -t '【本番反映】${{ github.event.head_commit.message }}' \
             -b "# 本番反映\nここに文字列" \
             -a ${{ github.actor }} 
+      - name: Edit release pr
+        if: ${{ steps.check_pr.outputs.count != 0 }}
+        run: |
+          gh pr list -S ${pr_title}' in:本番反映'
+          # gh pr edit \
+          #   -B main \
+          #   -t '【本番反映】${{ github.event.head_commit.message }}' \
+          #   -b "# 本番反映\nここに文字列" \
+          #   -a ${{ github.actor }} 
