@@ -42,6 +42,11 @@ jobs:
       # リリース用PRを作成
       - name: Create release pr
         if: ${{ steps.check_pr.outputs.count == 0 }}
+        # -B ブランチ名
+        # -t タイトル
+        # -a assignee(PRの作成者がbotになるので)
+        # -b bodyだがPRテンプレートをそのまま使っているので - を指定
+        # --body-title bodyの作成 ファイル名を指定しています
         run: |
           gh pr create \
             -B main \
@@ -51,18 +56,11 @@ jobs:
             --body-file ./.github/pull_request_template.md
       - name: Edit release pr
         if: ${{ steps.check_pr.outputs.count != 0 }}
+        # -t タイトルには既存のタイトル + 今回の追加分を指定
         run: |
-          echo '1' $GITHUB_REF
-          echo '2' ${{ github.ref }}
-          echo '3' ${{ github.ref_name }}
-          echo '4' ${{ github.head_ref }}
-          echo '5' ${{ github.base_ref }}
-
           pr_data=$(gh pr list -S ${pr_title}' in:本番反映' \
-            --json "number,title,body" \
+            --json "title" \
             | jq -c .[])
-          NUMBER="$(echo $pr_data | jq -r '.number')"
           TITLE="$(echo $pr_data | jq -r '.title')"
-          BODY="$(echo $pr_data | jq -r '.body')"
           gh pr edit  ${{ github.ref_name }} \
             -t '${TITLE} / ${{ github.event.head_commit.message }}'
