@@ -47,7 +47,7 @@ jobs:
             -B main \
             -t '【本番反映】${{ github.event.head_commit.message }}' \
             -b " \
-            # 区分 <br>  \
+            # 区分 <br><br>  \
             - [] hoge  <br> \
             - [] fuga <br>  \
             ## 内容  <br> \
