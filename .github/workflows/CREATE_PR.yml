@@ -59,7 +59,7 @@ jobs:
           BODY="$(echo $pr_data | jq -r '.body')"
           gh pr edit $NUMBER \
             -t $TITLE / ${{ github.event.head_commit.message }} \
-            -b "
-              $BODY
-              - ${{ github.event.head_commit.message }}
-            "
+            -b " \
+              $BODY \
+              - ${{ github.event.head_commit.message }} \
+            "\
