@@ -46,8 +46,12 @@ jobs:
           gh pr create \
             -B main \
             -t '【本番反映】${{ github.event.head_commit.message }}' \
-            -b "# 本番反映 \
-            - ${{ github.event.head_commit.message }} \
+            -b " \
+            # 区分  \
+            - [] hoge   \
+            - [] fuga   \
+            ## 内容   \
+            - ${{ github.event.head_commit.message }}  \
             " \
             -a ${{ github.actor }} 
       - name: Edit release pr
