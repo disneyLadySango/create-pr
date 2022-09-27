@@ -52,6 +52,7 @@ jobs:
         if: ${{ steps.check_pr.outputs.count != 0 }}
         run: |
           prJson=$(gh pr list -S ${pr_title}' in:本番反映' --json number --json title --json body --json assignees)
+          echo prJson
           echo prJson | jq .
           # gh pr edit \
           #   -B main \
