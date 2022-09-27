@@ -20,7 +20,7 @@
 
 on:
   push:
-    # branches: [ develop ]
+    branches: [ develop ]
 
 jobs:
   create-release-pr:
