@@ -20,12 +20,13 @@
 
 on:
   push:
-    # branches: [ develop ]
+    branches: [ develop ]
 
 jobs:
   create-release-pr:
     runs-on: ubuntu-latest
 
+    # GithubTokenを使ってPRを立てる
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -45,4 +46,8 @@ jobs:
       - name: Create release pr
         if: ${{ steps.check_pr.outputs.count == 0 }}
         run: |
-          gh pr create -B ${{ steps.check_pr.outputs.base_branch }} -t '【本番反映】${{ github.event.head_commit.message }}' -b ""
+          gh pr create 
+            -B ${{ steps.check_pr.outputs.base_branch }} 
+            -t '【本番反映】${{ github.event.head_commit.message }}' 
+            -b "main"
+            -a ${{ github.actor }}
