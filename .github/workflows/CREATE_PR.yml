@@ -51,7 +51,7 @@ jobs:
       - name: Edit release pr
         if: ${{ steps.check_pr.outputs.count != 0 }}
         run: |
-          gh pr list -S ${pr_title}' in:本番反映' -q
+          gh pr list -S ${pr_title}' in:本番反映' --json title
           # gh pr edit \
           #   -B main \
           #   -t '【本番反映】${{ github.event.head_commit.message }}' \
