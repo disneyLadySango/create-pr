@@ -54,8 +54,8 @@ jobs:
           pr_data=$(gh pr list -S ${pr_title}' in:本番反映' \
             --json "number,title,body" \
             | jq -c .[])
-          NUMBER=$($pr_data | jq -r '.number')
-          TITLE=$($pr_data | jq -r '.title')
+          NUMBER=`$pr_data | jq -r '.number'`
+          TITLE=`$pr_data | jq -r '.title'`
           echo $NUMBER
           echo $TITLE
           # NUMBER=$($pr_data | jq -r .number)
