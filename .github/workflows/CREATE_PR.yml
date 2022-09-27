@@ -47,11 +47,11 @@ jobs:
             -B main \
             -t '【本番反映】${{ github.event.head_commit.message }}' \
             -b " \
-            # 区分  \
-            - [] hoge   \
-            - [] fuga   \
-            ## 内容   \
-            - ${{ github.event.head_commit.message }}  \
+            # 区分 <br>  \
+            - [] hoge  <br> \
+            - [] fuga <br>  \
+            ## 内容  <br> \
+            - ${{ github.event.head_commit.message }} <br> \
             " \
             -a ${{ github.actor }} 
       - name: Edit release pr
