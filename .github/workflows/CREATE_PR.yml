@@ -54,11 +54,12 @@ jobs:
           pr_data=$(gh pr list -S ${pr_title}' in:本番反映' \
             --json "number,title,body" \
             | jq -c .[])
-          NUMBER=$($pr_data | jq -r .number)
-          TITLE=$($pr_data | jq -r .title)
-          BODY=$($pr_data | jq -r .body)
-          echo $NUMBER
-          echo $TITLE
+          echo $pr_data
+          # NUMBER=$($pr_data | jq -r .number)
+          # TITLE=$($pr_data | jq -r .title)
+          # BODY=$($pr_data | jq -r .body)
+          # echo $NUMBER
+          # echo $TITLE
           # gh pr edit $NUMBER \
           #   -t $TITLE / ${{ github.event.head_commit.message }} \
           #   -a ${{ github.actor }} 
