@@ -37,9 +37,9 @@ jobs:
       - name: Check if pr exists
         id: check_pr
         run: |
+          COMMIT_MESSAGE=$(echo "${{ github.event.head_commit.message }}" | sed -n -e 1p
           echo "::set-output name=count::$(gh pr list -S ${pr_title}' in:本番反映' | wc -l)"
-          echo "::set-output name=base_branch::$base_branch"
-          echo "::set-output name=message::$(echo "${{ github.event.head_commit.message }}" | sed -n -e 1p"
+          echo "::set-output name=message::${COMMIT_MESSAGE}"
       # リリース用PRを作成
       - name: Create release pr
         if: ${{ steps.check_pr.outputs.count == 0 }}
