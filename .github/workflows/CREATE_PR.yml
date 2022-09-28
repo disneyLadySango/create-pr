@@ -1,0 +1,70 @@
+# on: 
+#   push:
+#   pull_request:
+
+# jobs:
+#   echo:
+#     runs-on: ubuntu-latest
+#     steps: 
+#       - run: |
+#           echo '1' $GITHUB_REF
+#           echo '2' ${{ github.ref }}
+#           echo '3' ${{ github.ref_name }}
+#           echo '4' ${{ github.head_ref }}
+#           echo '5' ${{ github.base_ref }}
+#           echo '6' ${{ github.event.head_commit.message }}
+#           echo '7' ${{ github.event.sender.avatar_url }}
+#           echo '7' ${{ github.actor }}
+#           echo '7' ${{ env.COMMIT_MESSAGE  }}
+# name: Create a pull request for release.
+
+on:
+  push:
+    branches: [ develop ]
+
+jobs:
+  create-release-pr:
+    runs-on: ubuntu-latest
+
+    # GithubTokenを使ってPRを立てる
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # リリース用PRが既に存在するかどうかをチェック
+      - name: Check if pr exists
+        id: check_pr
+        run: |
+          COMMIT_MESSAGE=$(echo "${{ github.event.head_commit.message }}" | sed -n -e 1p)
+          echo "::set-output name=count::$(gh pr list -S ${pr_title}' in:本番反映' | wc -l)"
+          echo "::set-output name=message::${COMMIT_MESSAGE}"
+          echo "::set-output name=base_branch::$base_branch"
+      # リリース用PRを作成
+      - name: Create release pr
+        if: ${{ steps.check_pr.outputs.count == 0 }}
+        # -B ブランチ名
+        # -t タイトル
+        # -a assignee(PRの作成者がbotになるので)
+        # -b bodyだがPRテンプレートをそのまま使っているので - を指定
+        # --body-title bodyの作成 ファイル名を指定しています
+
+        run: |
+          gh pr create \
+            -B main \
+            -t '【本番反映】${{ steps.check_pr.outputs.message }}' \
+            -a ${{ github.actor }}  \
+            -b "-" \
+            --body-file ./.github/pull_request_template.md
+      - name: Edit release pr
+        if: ${{ steps.check_pr.outputs.count != 0 }}
+        # -t タイトルには既存のタイトル + 今回の追加分を指定
+        run: |
+          pr_data=$(gh pr list -S ${pr_title}' in:本番反映' \
+            --json "title" \
+            | jq -c .[])
+          TITLE="$(echo $pr_data | jq -r '.title')"
+          echo $TITLE
+          gh pr edit  ${{ github.ref_name }} \
+            -t "${TITLE} / ${{ steps.check_pr.outputs.message }}"
