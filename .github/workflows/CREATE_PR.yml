@@ -20,7 +20,7 @@
 
 on:
   push:
-    branches: [ develop ]
+    # branches: [ develop ]
 
 jobs:
   create-release-pr:
@@ -39,7 +39,7 @@ jobs:
         run: |
           echo "::set-output name=count::$(gh pr list -S ${pr_title}' in:本番反映' | wc -l)"
           echo "::set-output name=base_branch::$base_branch"
-          echo "::set-output name=message::$(head -n 1 ${{ github.event.head_commit.message }})"
+          echo "::set-output name=message::$(echo "${{ github.event.head_commit.message }}" | sed -n -e 1p"
       # リリース用PRを作成
       - name: Create release pr
         if: ${{ steps.check_pr.outputs.count == 0 }}
@@ -51,7 +51,7 @@ jobs:
 
         run: |
           gh pr create \
-            -B main \
+            -B develop \
             -t '【本番反映】${{ steps.check_pr.outputs.message }}' \
             -a ${{ github.actor }}  \
             -b "-" \
