@@ -20,7 +20,7 @@
 
 on:
   push:
-    # branches: [ develop ]
+    branches: [ develop ]
 
 jobs:
   create-release-pr:
@@ -51,7 +51,7 @@ jobs:
 
         run: |
           gh pr create \
-            -B develop \
+            -B main \
             -t '【本番反映】${{ steps.check_pr.outputs.message }}' \
             -a ${{ github.actor }}  \
             -b "-" \
