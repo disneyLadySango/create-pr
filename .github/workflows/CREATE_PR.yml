@@ -39,6 +39,7 @@ jobs:
         run: |
           echo "::set-output name=count::$(gh pr list -S ${pr_title}' in:本番反映' | wc -l)"
           echo "::set-output name=base_branch::$base_branch"
+          echo "::set-output name=message::$(head -n 1 ${{ github.event.head_commit.message }})"
       # リリース用PRを作成
       - name: Create release pr
         if: ${{ steps.check_pr.outputs.count == 0 }}
@@ -51,7 +52,7 @@ jobs:
         run: |
           gh pr create \
             -B main \
-            -t '【本番反映】${{ github.event.head_commit.message }}' \
+            -t '【本番反映】${{ steps.check_pr.outputs.message }}' \
             -a ${{ github.actor }}  \
             -b "-" \
             --body-file ./.github/pull_request_template.md
@@ -65,4 +66,4 @@ jobs:
           TITLE="$(echo $pr_data | jq -r '.title')"
           echo $TITLE
           gh pr edit  ${{ github.ref_name }} \
-            -t "${TITLE} / ${{ github.event.head_commit.message }}"
+            -t "${TITLE} / ${{ steps.check_pr.outputs.message }}"
