@@ -38,7 +38,7 @@ jobs:
         id: check_pr
         run: |
           COMMIT_MESSAGE=$(echo "${{ github.event.head_commit.message }}" | sed -n -e 1p)
-          echo "::set-output name=count::$(gh pr list -S ${pr_title}' in:本番反映' | wc -l)"
+          echo "::set-output name=count::$(gh pr list -S '本番反映' in:title | wc -l)"
           echo "::set-output name=message::${COMMIT_MESSAGE}"
           echo "::set-output name=base_branch::$base_branch"
       # リリース用PRを作成
@@ -55,8 +55,7 @@ jobs:
             -B main \
             -t '【本番反映】${{ steps.check_pr.outputs.message }}' \
             -a ${{ github.actor }}  \
-            -b "-" \
-            --body-file ./.github/pull_request_template.md
+            --body-file ./.github/test.md
       - name: Edit release pr
         if: ${{ steps.check_pr.outputs.count != 0 }}
         # -t タイトルには既存のタイトル + 今回の追加分を指定
